@@ -10,23 +10,23 @@ const fetchMovies = createAsyncThunk('movies/fetchMovies', async (_, { rejectWit
     }
 });
 
-export const fetchMovieById = createAsyncThunk(
-    'movies/fetchById',
-    async (movieId, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/v1/movies/${movieId}`);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error.response.data);
-        }
-    }
-);
+// export const fetchMovieById = createAsyncThunk(
+//     'movies/fetchById',
+//     async (movieId, { rejectWithValue }) => {
+//         try {
+//             const response = await axios.get(`http://localhost:5000/api/v1/movies/${movieId}`);
+//             return response.data;
+//         } catch (error) {
+//             return rejectWithValue(error.response.data);
+//         }
+//     }
+// );
 
 const movieSlice = createSlice({
     name: "movies",
     initialState: {
         movieList: [],
-        selectedMovie: null,
+        // selectedMovie: null,
         loading: false,
         error: null
     },
@@ -50,18 +50,18 @@ const movieSlice = createSlice({
             state.loading = false;
             state.error = action.payload.message;
         });
-        // --- 3. Add cases for the NEW thunk to update 'selectedMovie' ---
-        builder.addCase(fetchMovieById.pending, (state) => {
-            state.status = 'loading';
-        })
-        builder.addCase(fetchMovieById.fulfilled, (state, action) => {
-            state.status = 'succeeded';
-            state.selectedMovie = action.payload.data;
-        })
-        builder.addCase(fetchMovieById.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.payload ? action.payload.message : 'Something went wrong';
-        });
+        // // --- 3. Add cases for the NEW thunk to update 'selectedMovie' ---
+        // builder.addCase(fetchMovieById.pending, (state) => {
+        //     state.status = 'loading';
+        // })
+        // builder.addCase(fetchMovieById.fulfilled, (state, action) => {
+        //     state.status = 'succeeded';
+        //     state.selectedMovie = action.payload.data;
+        // })
+        // builder.addCase(fetchMovieById.rejected, (state, action) => {
+        //     state.status = 'failed';
+        //     state.error = action.payload ? action.payload.message : 'Something went wrong';
+        // });
     }
 });
 

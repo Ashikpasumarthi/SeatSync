@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { seatSyncStore, persistor } from './Frontend/store'; //persistor from './store';
 import HomePage from './Frontend/Components/homepage';
-import MovieDetailPage from './Frontend/Components/MovieInfo/movieInfoPage'
+import MovieInfoPage from './Frontend/Components/MovieInfo/movieInfoPage'
 import { PersistGate } from 'redux-persist/integration/react';
 
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/movie/:slug/:id',
-        element: <MovieDetailPage />
+        element: <MovieInfoPage />
       }
     ]
   }

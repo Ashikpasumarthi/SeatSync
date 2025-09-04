@@ -6,6 +6,13 @@ import SwiperComponent from "../Components/SwiperComponent/swiper";
 import { createTheme } from "@mui/material";
 
 export default function Homepage() {
+      // Select only what you need
+      const movieList = useSelector(state => state.movies.movieList);
+    
+      useEffect(() => {
+        console.log("App component rendered, movieList:", movieList); //this will render the App component whenever movieList changes
+      }, [movieList]);
+    
     const theme = createTheme({
         breakpoints: {
             values: {
@@ -17,7 +24,7 @@ export default function Homepage() {
             },
         },
     })
-    const movieList = useSelector(state => state.movies.movieList);
+    // const movieList = useSelector(state => state.movies.movieList);
     console.log("HomePage data", movieList);
     const dispatch = useDispatch();
     useEffect(() => {

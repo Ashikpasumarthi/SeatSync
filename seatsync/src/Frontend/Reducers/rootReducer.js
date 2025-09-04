@@ -1,6 +1,6 @@
 
 import movieReducer from '../Slices/movieSlice';
-import {showtimeReducer} from '../Slices/showTimeSlice';
+import showtimeReducer from '../Slices/showTimeSlice';
 
 const reducerMappings = {
     movies: movieReducer,

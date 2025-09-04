@@ -1,40 +1,50 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMovieById } from '../../Slices/movieSlice'; // Import the new thunk
-import { fetchShowtimesByMovieId } from '../../Slices/showTimeSlice';
+// import { fetchMovieById } from '../../Slices/movieSlice'; // Import the new thunk
+import { fetchShowTimes } from '../../Slices/showTimeSlice';
 import { Box } from "@mui/material";
 
 export default function MovieInfoPage() {
-    // Use 'movieId' to match your route: /movie/:slug/:movieId
-    const { movieId } = useParams();
+
+    const { slug, id } = useParams();
+    console.log("Slug and MovieId:", slug, id);
     const dispatch = useDispatch();
-
-    // Select the single movie and the showtimes
-    const movie = useSelector((state) => state.movies.selectedMovie);
+    // const movie = useSelector((state) => state.movies.selectedMovie);
+    // console.log("Selected Movie:", movie);
     const showtimes = useSelector((state) => state.showTime.showTimes);
+    console.log("Showtimes:", showtimes);
     const movieStatus = useSelector((state) => state.movies.status);
-
+    console.log("Movie Status:", movieStatus);
+    console.log(showtimes)
     useEffect(() => {
-        if (movieId) {
-            // Dispatch the actions to fetch data FOR THIS PAGE
-            dispatch(fetchMovieById(movieId));
-// I have commented below line as it is not needed now , but will uncomment when show details are needed
-            // dispatch(fetchShowtimesByMovieId(movieId));
-        }
-    }, [dispatch, movieId]);
+        dispatch(fetchShowTimes(id));
+    }, [dispatch, id]);
 
-    if (movieStatus === 'loading' || !movie) {
+    let bannerURL = showtimes.length > 0 && showtimes[0].movie.bannerURL;
+    let title = showtimes.length > 0 && showtimes[0].movie.title;
+
+    if (movieStatus === 'loading') {
         return <div>Loading...</div>;
     }
 
     return (
-        <Box>
-            {/* No more .find()! Just use the 'movie' object directly */}
-            {movie.bannerUrl && (
-                <img src={movie.bannerUrl} alt={movie.title} style={{ width: '100%', height: 'auto' }} />
-            )}
-            {/* ... rest of your page to display showtimes */}
+        <Box style={ { position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: 'black' } }>
+            <img style={ {
+
+                width: '100vw',
+                height: '45%',
+
+                position: 'static',
+                aspectRatio: '16 / 9',
+                backgroundRepeat: 'no-repeat',
+                backgroundFill: 'contain',
+
+
+
+            } } src={ `${bannerURL}` } alt={ title } />
+
         </Box>
+
     );
 }
