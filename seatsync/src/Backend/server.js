@@ -16,7 +16,7 @@ const MONGO_PORT = process.env.MONGO_PORT || 27017;
 
 app.use(express.json());
 app.use("/api/v1/movies", movieRouter);
-app.use("/api/v1/showtime", showtimeRouter);
+app.use("/api/v1/showtimes", showtimeRouter);
 app.use("/api/v1/auditorium", auditoriumRouter);
 app.use("/api/v1/venue", venueRouter);
 

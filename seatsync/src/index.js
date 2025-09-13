@@ -8,7 +8,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { seatSyncStore, persistor } from './Frontend/store'; //persistor from './store';
 import HomePage from './Frontend/Components/homepage';
-import MovieInfoPage from './Frontend/Components/MovieInfo/movieInfoPage'
+import MovieInfoPage from './Frontend/Components/MovieInfo/movieInfoPage';
+import SeatingPage from './Frontend/Components/SeatLayout/seatingPage';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const router = createBrowserRouter([
@@ -22,8 +23,14 @@ const router = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path: '/movie/:slug/:id',
-        element: <MovieInfoPage />
+        path: 'movie/:slug/:id',
+        element: <MovieInfoPage />,
+
+      },
+      {
+        // This is the NEW, SEPARATE route for your seating page
+        path: 'booking/:showtimeId',
+        element: <SeatingPage />
       }
     ]
   }

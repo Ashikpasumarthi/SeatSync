@@ -6,7 +6,7 @@ const {
     getShowtimeById,
     updateShowtime,
     deleteShowtime,
-    
+
 } = require('../Controllers/showtimeController');
 
 router.post('/', createShowtime);       // Handles POST to /api/showtimes

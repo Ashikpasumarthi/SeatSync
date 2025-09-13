@@ -23,9 +23,9 @@ class ShowtimeService {
         }
     }
 
-    static async getShowtimesDataById(id) {
+    static async getShowtimeById(id) {
         try {
-            const response = await ShowTime.findById(id).populate({ path: 'auditorium', populate: { path: 'venue' } });
+            const response = await ShowTime.findById(id).populate('movie').populate({ path: 'auditorium', populate: { path: 'venue' } });
             return response;
         }
         catch (error) {

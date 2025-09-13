@@ -16,7 +16,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['movies']
+    whitelist: ['movies', 'showTime'] // Make sure your slice name is here
 
 }
 const rootReducer = combineReducers(reducerMappings);

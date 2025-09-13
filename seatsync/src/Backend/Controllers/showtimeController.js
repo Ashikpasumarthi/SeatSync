@@ -23,7 +23,7 @@ async function getAllShowtimes(req, res) {
 async function getShowtimeById(req, res) {
     const { id } = req.params;
     try {
-        const showtime = await ShowtimeService.getShowtimesDataByID(id); // A new service function
+        const showtime = await ShowtimeService.getShowtimeById(id); // A new service function
         if (!showtime) {
             return res.status(404).json({ message: 'Showtime not found' });
         }
