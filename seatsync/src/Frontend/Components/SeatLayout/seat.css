@@ -1,0 +1,8 @@
+.mySeat {
+    background-color: ghostwhite !important;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}

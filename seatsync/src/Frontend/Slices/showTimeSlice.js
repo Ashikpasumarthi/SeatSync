@@ -17,6 +17,7 @@ export const fetchShowtimeById = createAsyncThunk(
     'showTime/fetchById',
     async (showtimeId, { rejectWithValue }) => {
         try {
+            console.log("Fetching showtime with ID:", showtimeId);
             const response = await axios.get(`http://localhost:5000/api/v1/showtimes/${showtimeId}`);
             return response.data;
         } catch (error) {
@@ -31,6 +32,7 @@ const showtimeSlice = createSlice({
         showTimes: [],
         selectedShowtime: null,
         status: 'idle',
+        selectedShowtimeStatus: 'idle',
         error: null,
     },
     extraReducers: (builder) => {
@@ -46,14 +48,14 @@ const showtimeSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(fetchShowtimeById.pending, (state) => {
-                state.status = 'loading';
+                state.selectedShowtimeStatus = 'loading';
             })
             .addCase(fetchShowtimeById.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.selectedShowtimeStatus = 'succeeded';
                 state.selectedShowtime = action.payload; // Updates the new state
             })
             .addCase(fetchShowtimeById.rejected, (state, action) => {
-                state.status = 'failed';
+                state.selectedShowtimeStatus = 'failed';
                 state.error = action.error.message;
             });
     }
