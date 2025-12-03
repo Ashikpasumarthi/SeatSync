@@ -1,5 +1,5 @@
 const express = require('express');
-const  AuditoriumService  = require('../ServiceLayer/auditoriumService')
+const AuditoriumService = require('../ServiceLayer/auditoriumService')
 
 async function createAuditorium(req, res) {
     const { name, seatLayout, venue } = req.body;
@@ -36,9 +36,9 @@ async function getAuditoriumById(req, res) {
 
 async function updateAuditorium(req, res) {
     const { id } = req.params;
-    const { name, seatLayout, venue } = req.body;
+    const { name, seatLayout, venue, seatCapacity, isWheelchairAccessible, features } = req.body;
     try {
-        const updatedAuditorium = await AuditoriumService.updateAuditorium(id, { name, seatLayout, venue });
+        const updatedAuditorium = await AuditoriumService.updateAuditorium(id, { name, seatLayout, seatCapacity, isWheelchairAccessible, features, venue });
         if (!updatedAuditorium) {
             return res.status(404).json({ error: 'Auditorium not found' });
         }

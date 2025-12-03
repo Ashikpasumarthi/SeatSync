@@ -63,6 +63,35 @@ class ShowtimeService {
             throw error;
         }
     }
+
+    static async pushHoldSeats({ showtimeId, seats }) {
+        // const { showTimeId, seats } = bookingData;
+        // Note: We'll need to get 'userId' from an auth system later.
+        // For now, you can hardcode it for testing if needed.
+
+        // 3. STEP 1: Update the Showtime to book the seats
+
+        const result = await ShowTime.findOneAndUpdate(
+            {
+                _id: showtimeId,
+                // --- THE ATOMIC LOCK CHECK ---
+                // 1. Ensure seats are NOT in the permanently sold list
+                bookedSeats: { $nin: seats },
+                // 2. Ensure seats are NOT in the temporarily held list
+                heldSeats: { $nin: seats }
+            },
+            {
+                // Use $push to add new items to the bookedSeats array
+                $push: { heldSeats: { $each: seats } }
+            },
+            { new: true } // This returns the updated document
+        );
+
+        if (!result) {
+
+            throw new Error("Seat lock failed. Seats already sold or held.");
+        }
+    }
 }
 module.exports = ShowtimeService;
 

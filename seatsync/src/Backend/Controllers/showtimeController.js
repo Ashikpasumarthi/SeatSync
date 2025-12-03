@@ -67,13 +67,31 @@ async function getShowtimesByMovieId(req, res) {
     }
 }
 
+async function holdSeating(req, res) {
+    const { seats } = req.body;
+    const { showtimeId } = req.params;
+
+    try {
+        const result = await ShowtimeService.pushHoldSeats({ showtimeId, seats });
+        req.app.get('io').to(holdData.showtimeId).emit('seat_held', result.heldSeats);
+        res.status(200).json({ message: 'Seats locked temporarily', data: result });
+    }
+    catch (error) {
+        const statusCode = error.message.includes('Showtime not found') ? 404 : 500;
+        res.status(statusCode).json({ message: 'Error creating booking', error: error.message });
+
+    }
+}
+
+
 module.exports = {
     createShowtime,
     getAllShowtimes,
     getShowtimeById,
     updateShowtime,
     deleteShowtime,
-    getShowtimesByMovieId
+    getShowtimesByMovieId,
+    holdSeating
 };
 
 //nModified

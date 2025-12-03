@@ -6,6 +6,7 @@ const {
     getShowtimeById,
     updateShowtime,
     deleteShowtime,
+    holdSeating,
 
 } = require('../Controllers/showtimeController');
 
@@ -14,6 +15,6 @@ router.get('/', getAllShowtimes);      // Handles GET to /api/showtimes
 router.get('/:id', getShowtimeById);   // Handles GET to /api/showtimes/:id
 router.put('/:id', updateShowtime);    // Handles PUT to /api/showtimes/:id
 router.delete('/:id', deleteShowtime); // Handles DELETE to /api/showtimes/:id
-
+router.post('/:id/hold', holdSeating);
 
 module.exports = router;

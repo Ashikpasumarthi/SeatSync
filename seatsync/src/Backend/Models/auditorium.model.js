@@ -12,8 +12,26 @@ const auditoriumSchema = new mongoose.Schema({
         // After (Saved in MongoDB with trim: true): "Dune: Part Two"
     },
     seatLayout: {
-        type: [[String]],
+        // type: [[String]],
+        type: [[{
+            type: { type: String, required: true },
+            seatNumber: { type: String, default: null },
+            seatType: { type: String },
+            price: { type: String , default: 0 }
+        }]],
         required: true,
+    },
+    seatCapacity: {
+        type: Number,
+        default: 0
+    },
+    isWheelchairAccessible: {
+        type: Boolean,
+        default: false
+    },
+    features: {
+        type: [String],
+        default: []
     },
     venue: {
         type: mongoose.Schema.Types.ObjectId,

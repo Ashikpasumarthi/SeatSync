@@ -1,3 +1,5 @@
+const { Server } = require('socket.io');
+const http = require('http');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // 1. Import cors
@@ -7,8 +9,38 @@ const movieRouter = require('./Routes/movieRoute.js');
 const showtimeRouter = require('./Routes/showtimeRoute.js');
 const auditoriumRouter = require('./Routes/auditoriumRoute.js');
 const venueRouter = require('./Routes/venueRoute.js');
+const bookingRouter = require('./Routes/bookingRoute.js');
 const app = express();
 app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        // You must allow your frontend URL here, or Socket.IO will block the connection.
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
+
+
+io.on("connection", (socket) => {
+    console.log(`User Connected: ${socket.id}`);
+    socket.on("Join_room", (showtimeId) => {
+        socket.join(showtimeId); // <--- This is the magic function
+        console.log(`User ${socket.id} joined room: ${showtimeId}`);
+    });
+    socket.emit('message', 'welcome to the booking window');
+    socket.broadcast.emit('message', 'A user has joined the chat');
+    socket.on('seat', (seat) => {
+        const { showTimeId, seatNumber } = seat;
+        console.log(seat);
+        socket.to(showTimeId).emit("otherSelection", seatNumber);
+    })
+    socket.on("disconnect", () => {
+        console.log("User Disconnected", socket.id);
+    });
+});
+
+app.set('io', io);
 
 const PORT = process.env.PORT || 5000;
 const MONGO_PORT = process.env.MONGO_PORT || 27017;
@@ -19,6 +51,8 @@ app.use("/api/v1/movies", movieRouter);
 app.use("/api/v1/showtimes", showtimeRouter);
 app.use("/api/v1/auditorium", auditoriumRouter);
 app.use("/api/v1/venue", venueRouter);
+app.use("/api/v1/bookings", bookingRouter);
+
 
 
 mongoose
@@ -27,7 +61,7 @@ mongoose
     .catch((err) => console.error("MongoDB connection error:", err));
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`app is running on port ${PORT}`);
 });
 
